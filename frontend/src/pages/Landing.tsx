@@ -1,29 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { BookOpen, Brain, ImageIcon } from 'lucide-react';
-
-const features = [
-  {
-    icon: BookOpen,
-    title: 'Smart Summaries',
-    description: 'Transform lengthy notes into concise, easy-to-understand summaries.',
-  },
-  {
-    icon: Brain,
-    title: 'Interactive Quizzes',
-    description: 'Test your knowledge with AI-generated quizzes tailored to your material.',
-  },
-  {
-    icon: ImageIcon,
-    title: 'Visual Diagrams',
-    description: 'Create concept maps and flowcharts to visualize relationships.',
-  },
-];
+import Hero from '@/components/landing/Hero';
+import FeatureCards from '@/components/landing/FeatureCards';
 
 export default function Landing() {
-  const navigate = useNavigate();
-
   return (
     <div className="min-h-screen flex flex-col">
       <section className="flex-1 flex flex-col items-center justify-center px-4 py-20">
