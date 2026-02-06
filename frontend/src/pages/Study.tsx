@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useCallback } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -140,7 +141,14 @@ export default function Study() {
   }, [state.content, diagramType]);
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    
+  <motion.div
+    className="min-h-screen py-8 px-4"
+    initial={{ opacity: 0, y: 12 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.4, ease: "easeOut" }}
+  >
+
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold">Study Workspace</h1>
@@ -291,6 +299,6 @@ export default function Study() {
           </div>
         </div>
       </div>
-    </div>
+   </motion.div>
   );
 }
