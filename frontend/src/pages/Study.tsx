@@ -1,34 +1,40 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useCallback } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
-import type { StudyState, SummaryStyle, QuizDifficulty, DiagramType } from '@/types';
-import { summarize, generateQuiz, generateDiagram, uploadPDF } from '@/lib/api';
-import TextInput from '@/components/study/TextInput';
-import PDFUploader from '@/components/study/PDFUploader';
-import SummaryCard from '@/components/study/SummaryCard';
-import QuizCard from '@/components/study/QuizCard';
-import DiagramImage from '@/components/study/DiagramImage';
+import { motion } from "framer-motion";
+import { useState, useCallback } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import type {
+  StudyState,
+  SummaryStyle,
+  QuizDifficulty,
+  DiagramType,
+} from "@/types";
+import { summarize, generateQuiz, generateDiagram, uploadPDF } from "@/lib/api";
+import TextInput from "@/components/study/TextInput";
+import PDFUploader from "@/components/study/PDFUploader";
+import SummaryCard from "@/components/study/SummaryCard";
+import QuizCard from "@/components/study/QuizCard";
+import DiagramImage from "@/components/study/DiagramImage";
 
 export default function Study() {
   const [state, setState] = useState<StudyState>({
-    inputType: 'text',
-    content: '',
+    inputType: "text",
+    content: "",
     file: null,
     summary: null,
     quiz: null,
     diagram: null,
-    activeOutputTab: 'summary',
+    activeOutputTab: "summary",
     isLoading: false,
     error: null,
   });
 
-  const [summaryStyle, setSummaryStyle] = useState<SummaryStyle>('brief');
-  const [quizDifficulty, setQuizDifficulty] = useState<QuizDifficulty>('medium');
+  const [summaryStyle, setSummaryStyle] = useState<SummaryStyle>("brief");
+  const [quizDifficulty, setQuizDifficulty] =
+    useState<QuizDifficulty>("medium");
   const [questionCount, setQuestionCount] = useState(5);
-  const [diagramType, setDiagramType] = useState<DiagramType>('mindmap');
+  const [diagramType, setDiagramType] = useState<DiagramType>("mindmap");
 
   const handleContentChange = useCallback((content: string) => {
     setState((prev) => ({ ...prev, content }));
@@ -45,12 +51,14 @@ export default function Study() {
           content: response.data!.text,
           isLoading: false,
         }));
-        toast.success(`Extracted ${response.data.word_count} words from ${response.data.page_count} pages`);
+        toast.success(
+          `Extracted ${response.data.word_count} words from ${response.data.page_count} pages`,
+        );
       } else {
-        throw new Error(response.error?.message || 'Failed to extract text');
+        throw new Error(response.error?.message || "Failed to extract text");
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Upload failed';
+      const message = error instanceof Error ? error.message : "Upload failed";
       setState((prev) => ({ ...prev, isLoading: false, error: message }));
       toast.error(message);
     }
@@ -58,7 +66,7 @@ export default function Study() {
 
   const handleSummarize = useCallback(async () => {
     if (!state.content.trim()) {
-      toast.error('Please enter some content first');
+      toast.error("Please enter some content first");
       return;
     }
 
@@ -70,15 +78,16 @@ export default function Study() {
         setState((prev) => ({
           ...prev,
           summary: response.data!,
-          activeOutputTab: 'summary',
+          activeOutputTab: "summary",
           isLoading: false,
         }));
-        toast.success('Summary generated!');
+        toast.success("Summary generated!");
       } else {
-        throw new Error(response.error?.message || 'Summarization failed');
+        throw new Error(response.error?.message || "Summarization failed");
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Summarization failed';
+      const message =
+        error instanceof Error ? error.message : "Summarization failed";
       setState((prev) => ({ ...prev, isLoading: false, error: message }));
       toast.error(message);
     }
@@ -86,27 +95,32 @@ export default function Study() {
 
   const handleGenerateQuiz = useCallback(async () => {
     if (!state.content.trim()) {
-      toast.error('Please enter some content first');
+      toast.error("Please enter some content first");
       return;
     }
 
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const response = await generateQuiz(state.content, questionCount, quizDifficulty);
+      const response = await generateQuiz(
+        state.content,
+        questionCount,
+        quizDifficulty,
+      );
       if (response.success && response.data) {
         setState((prev) => ({
           ...prev,
           quiz: response.data!,
-          activeOutputTab: 'quiz',
+          activeOutputTab: "quiz",
           isLoading: false,
         }));
-        toast.success('Quiz generated!');
+        toast.success("Quiz generated!");
       } else {
-        throw new Error(response.error?.message || 'Quiz generation failed');
+        throw new Error(response.error?.message || "Quiz generation failed");
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Quiz generation failed';
+      const message =
+        error instanceof Error ? error.message : "Quiz generation failed";
       setState((prev) => ({ ...prev, isLoading: false, error: message }));
       toast.error(message);
     }
@@ -114,7 +128,7 @@ export default function Study() {
 
   const handleGenerateDiagram = useCallback(async () => {
     if (!state.content.trim()) {
-      toast.error('Please enter some content first');
+      toast.error("Please enter some content first");
       return;
     }
 
@@ -126,29 +140,28 @@ export default function Study() {
         setState((prev) => ({
           ...prev,
           diagram: response.data!,
-          activeOutputTab: 'diagram',
+          activeOutputTab: "diagram",
           isLoading: false,
         }));
-        toast.success('Diagram generated!');
+        toast.success("Diagram generated!");
       } else {
-        throw new Error(response.error?.message || 'Diagram generation failed');
+        throw new Error(response.error?.message || "Diagram generation failed");
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Diagram generation failed';
+      const message =
+        error instanceof Error ? error.message : "Diagram generation failed";
       setState((prev) => ({ ...prev, isLoading: false, error: message }));
       toast.error(message);
     }
   }, [state.content, diagramType]);
 
   return (
-    
-  <motion.div
-    className="min-h-screen py-8 px-4"
-    initial={{ opacity: 0, y: 12 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.4, ease: "easeOut" }}
-  >
-
+    <motion.div
+      className="min-h-screen bg-background text-foreground py-8 px-4"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold">Study Workspace</h1>
@@ -159,14 +172,36 @@ export default function Study() {
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Input Section */}
-          <div className="space-y-4">
+          <div className="space-y-4 rounded-lg border bg-card text-card-foreground shadow-sm p-5 md:p-6">
+            <div>
+              <h2 className="text-base font-semibold">Your study material</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Paste text or upload a PDF to get started.
+              </p>
+            </div>
+
             <Tabs
               value={state.inputType}
-              onValueChange={(v) => setState((prev) => ({ ...prev, inputType: v as 'text' | 'pdf' }))}
+              onValueChange={(v) =>
+                setState((prev) => ({
+                  ...prev,
+                  inputType: v as "text" | "pdf",
+                }))
+              }
             >
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="text">Text</TabsTrigger>
-                <TabsTrigger value="pdf">PDF</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 rounded-lg bg-muted p-1">
+                <TabsTrigger
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  value="text"
+                >
+                  Text
+                </TabsTrigger>
+                <TabsTrigger
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  value="pdf"
+                >
+                  PDF
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="text" className="mt-4">
                 <TextInput
@@ -181,9 +216,11 @@ export default function Study() {
                   disabled={state.isLoading}
                   file={state.file}
                 />
-                {state.content && state.inputType === 'pdf' && (
-                  <div className="mt-4 p-4 bg-muted rounded-lg">
-                    <p className="text-sm text-muted-foreground mb-2">Extracted text preview:</p>
+                {state.content && state.inputType === "pdf" && (
+                  <div className="mt-4 rounded-lg border bg-muted p-4">
+                    <p className="text-sm font-medium text-muted-foreground mb-2">
+                      Extracted text preview:
+                    </p>
                     <p className="text-sm line-clamp-4">{state.content}</p>
                   </div>
                 )}
@@ -193,26 +230,35 @@ export default function Study() {
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-2">
               <Button
+                className="rounded-md"
                 onClick={handleSummarize}
                 disabled={state.isLoading || !state.content.trim()}
               >
-                {state.isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                {state.isLoading ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : null}
                 Summarize
               </Button>
               <Button
+                className="rounded-md"
                 onClick={handleGenerateQuiz}
                 disabled={state.isLoading || !state.content.trim()}
                 variant="secondary"
               >
-                {state.isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                {state.isLoading ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : null}
                 Generate Quiz
               </Button>
               <Button
+                className="rounded-md"
                 onClick={handleGenerateDiagram}
                 disabled={state.isLoading || !state.content.trim()}
                 variant="outline"
               >
-                {state.isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                {state.isLoading ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : null}
                 Create Diagram
               </Button>
             </div>
@@ -223,8 +269,10 @@ export default function Study() {
                 <label className="text-muted-foreground">Summary style:</label>
                 <select
                   value={summaryStyle}
-                  onChange={(e) => setSummaryStyle(e.target.value as SummaryStyle)}
-                  className="ml-2 border rounded px-2 py-1 bg-background"
+                  onChange={(e) =>
+                    setSummaryStyle(e.target.value as SummaryStyle)
+                  }
+                  className="ml-2 rounded-md border border-input bg-background px-2 py-1 text-foreground"
                 >
                   <option value="brief">Brief</option>
                   <option value="detailed">Detailed</option>
@@ -232,11 +280,15 @@ export default function Study() {
                 </select>
               </div>
               <div>
-                <label className="text-muted-foreground">Quiz difficulty:</label>
+                <label className="text-muted-foreground">
+                  Quiz difficulty:
+                </label>
                 <select
                   value={quizDifficulty}
-                  onChange={(e) => setQuizDifficulty(e.target.value as QuizDifficulty)}
-                  className="ml-2 border rounded px-2 py-1 bg-background"
+                  onChange={(e) =>
+                    setQuizDifficulty(e.target.value as QuizDifficulty)
+                  }
+                  className="ml-2 rounded-md border border-input bg-background px-2 py-1 text-foreground"
                 >
                   <option value="easy">Easy</option>
                   <option value="medium">Medium</option>
@@ -248,7 +300,7 @@ export default function Study() {
                 <select
                   value={questionCount}
                   onChange={(e) => setQuestionCount(Number(e.target.value))}
-                  className="ml-2 border rounded px-2 py-1 bg-background"
+                  className="ml-2 rounded-md border border-input bg-background px-2 py-1 text-foreground"
                 >
                   <option value="3">3</option>
                   <option value="5">5</option>
@@ -259,8 +311,10 @@ export default function Study() {
                 <label className="text-muted-foreground">Diagram type:</label>
                 <select
                   value={diagramType}
-                  onChange={(e) => setDiagramType(e.target.value as DiagramType)}
-                  className="ml-2 border rounded px-2 py-1 bg-background"
+                  onChange={(e) =>
+                    setDiagramType(e.target.value as DiagramType)
+                  }
+                  className="ml-2 rounded-md border border-input bg-background px-2 py-1 text-foreground"
                 >
                   <option value="mindmap">Mind Map</option>
                   <option value="flowchart">Flowchart</option>
@@ -271,20 +325,42 @@ export default function Study() {
           </div>
 
           {/* Output Section */}
-          <div className="space-y-4">
+          <div className="space-y-4 rounded-lg border bg-card text-card-foreground shadow-sm p-5 md:p-6">
+            <div>
+              <h2 className="text-base font-semibold">AI results</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Switch tabs to view the summary, quiz, or diagram.
+              </p>
+            </div>
+
             <Tabs
               value={state.activeOutputTab}
               onValueChange={(v) =>
                 setState((prev) => ({
                   ...prev,
-                  activeOutputTab: v as 'summary' | 'quiz' | 'diagram',
+                  activeOutputTab: v as "summary" | "quiz" | "diagram",
                 }))
               }
             >
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="summary">Summary</TabsTrigger>
-                <TabsTrigger value="quiz">Quiz</TabsTrigger>
-                <TabsTrigger value="diagram">Diagram</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-3 rounded-lg bg-muted p-1">
+                <TabsTrigger
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  value="summary"
+                >
+                  Summary
+                </TabsTrigger>
+                <TabsTrigger
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  value="quiz"
+                >
+                  Quiz
+                </TabsTrigger>
+                <TabsTrigger
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  value="diagram"
+                >
+                  Diagram
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="summary" className="mt-4">
                 <SummaryCard summary={state.summary} />
@@ -299,6 +375,6 @@ export default function Study() {
           </div>
         </div>
       </div>
-   </motion.div>
+    </motion.div>
   );
 }
