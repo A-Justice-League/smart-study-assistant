@@ -27,7 +27,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen flex flex-col">
       <section className="flex-1 flex flex-col items-center justify-center px-4 py-20">
-        <div className="max-w-3xl text-center space-y-6">
+        <div className="max-w-[72rem] text-center space-y-6">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             Study Smarter with{' '}
             <span className="text-primary">AI-Powered</span> Assistance
@@ -47,7 +47,7 @@ export default function Landing() {
       </section>
 
       <section className="py-16 px-4 bg-muted/50">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-[72rem] mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Features</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {features.map((feature) => (
