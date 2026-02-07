@@ -22,7 +22,7 @@ Stateless, fast, and designed for hackathon use.
 
 ---
 
-## Setup & Run Locally
+## To Setup & Run Locally, Python3.11.x is highly recommended
 
 1. Clone repo:
 
@@ -51,7 +51,7 @@ cd backend```
 ```venv\Scripts\activate```    # Windows
 ```pip install -r requirements.txt```
 
-3.Create .env file
+3. Create .env file
 
 GEMINI_API_KEY=GEMINI_API_KEY
 PORT=8000
@@ -60,3 +60,15 @@ CORS_ORIGINS=http://localhost:5173
 4.Run the server
 
 ```uvicorn app.main:app --reload --port 8000```
+
+# Sending Requests
+
+### API Endpoints Definations
+
+Summarize → POST http://127.0.0.1:8000/api/ai/summarize
+
+Quiz → POST http://127.0.0.1:8000/api/ai/quiz
+
+Diagram → POST http://127.0.0.1:8000/api/ai/diagram
+
+Upload → POST http://127.0.0.1:8000/api/upload
