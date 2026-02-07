@@ -32,6 +32,9 @@ venv/
 env/
 ENV/
 
+# Poetry cache (optional but recommended)
+.cache/
+
 #################################################
 # ENVIRONMENT VARIABLES (IMPORTANT)
 #################################################

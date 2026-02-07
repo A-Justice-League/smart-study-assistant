@@ -1,0 +1,34 @@
+    Args:
+        code (str): A machine-readable error code (e.g., 'CONTENT_TOO_SHORT').
+        message (str): A human-readable error message.
+        status_code (int): HTTP status code (e.g., 400, 500).
+
+    Raises:
+        HTTPException: FastAPI HTTPException with JSON error details.
+
+    Usage:
+        from app.core.errors import api_error
+
+        # Example usage in an endpoint
+        if len(content) < 50:
+            api_error("CONTENT_TOO_SHORT", "Content must be at least 50 characters.", 400)
+
+    Response format:
+    {
+        "success": False,
+        "error": {
+            "code": "ERROR_CODE",
+            "message": "Human-readable error message"
+        }
+    }
+    """
+    raise HTTPException(
+        status_code=status_code,
+        detail={
+            "success": False,
+            "error": {
+                "code": code,
+                "message": message
+            }
+        },
+    )

@@ -29,19 +29,30 @@ Stateless, fast, and designed for hackathon use.
 ```bash
 git clone <repo_url>
 cd backend```
-# Install Poetry if not installed
-curl -sSL https://install.python-poetry.org | python3 -
 
 # Setup
 
-## Install Poetry if not installed(Recommened if you complete linux environmen)
-```curl -sSL https://install.python-poetry.org | python3 -```
+## Install Poetry if not available(Recommened if you complete linux environment)
+```
+curl -sSL https://install.python-poetry.org | python3 -
+```
+### Add poetry to the system path if not done automatically
 
-# Install dependencies
+### Activate virtual environment
+```
+poetry env activate
+``` # prints the command you must run to activate the environment
+
+### After activating the environment run
+```
+poetry lock
+``` # To create the poetry.lock file
+
+### Install dependencies
+```
 poetry install
+``` # Installs all dependencies specified in pyproject.toml
 
-# Activate virtual environment
-poetry shell
 
 ## OR pip(Recommended if you are in a windows environment or a partial linux environment)
 ```python -m venv venv
