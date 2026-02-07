@@ -5,7 +5,6 @@ Pydantic schemas for AI endpoints: summarize, quiz, diagram.
 from pydantic import BaseModel
 from typing import List, Optional
 
-
 # -----------------------
 # Summarize
 # -----------------------
@@ -29,6 +28,12 @@ class SummarizeResult(BaseModel):
 # -----------------------
 # Quiz
 # -----------------------
+class QuizRequest(BaseModel):
+    content: str
+    count: int = 5  # number of questions
+    difficulty: Optional[str] = "medium"  # easy, medium, hard
+
+
 class QuizQuestion(BaseModel):
     id: str
     type: str
@@ -52,6 +57,11 @@ class QuizResult(BaseModel):
 # -----------------------
 # Diagram
 # -----------------------
+class DiagramRequest(BaseModel):
+    content: str
+    diagram_type: Optional[str] = "flowchart"  # e.g., flowchart, mindmap, sequence
+
+
 class DiagramResponse(BaseModel):
     title: str
     image_url: str

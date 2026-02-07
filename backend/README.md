@@ -33,30 +33,21 @@ cd backend```
 # Setup
 
 ## Install Poetry if not available(Recommened if you complete linux environment)
-```
-curl -sSL https://install.python-poetry.org | python3 -
-```
+```curl -sSL https://install.python-poetry.org | python3 -```
 ### Add poetry to the system path if not done automatically
 
 ### Activate virtual environment
-```
-poetry env activate
-``` # prints the command you must run to activate the environment
+```poetry env activate``` # prints the command you must run to activate the environment
 
 ### After activating the environment run
-```
-poetry lock
-``` # To create the poetry.lock file
+```poetry lock``` # To create the poetry.lock file
 
 ### Install dependencies
-```
-poetry install
-``` # Installs all dependencies specified in pyproject.toml
+```poetry install``` # Installs all dependencies specified in pyproject.toml
 
 
 ## OR pip(Recommended if you are in a windows environment or a partial linux environment)
-```python -m venv venv
-source venv/bin/activate```   # Linux
+```python -m venv venv source venv/bin/activate``` # Linux
 ```venv\Scripts\activate```    # Windows
 ```pip install -r requirements.txt```
 
