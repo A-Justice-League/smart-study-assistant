@@ -12,13 +12,13 @@ export default function Header() {
         <nav className="flex items-center gap-6">
           <Link
             to="/"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="text-base font-medium text-muted-foreground hover:text-primary hover:bg-primary/10 px-3 py-2 rounded-lg transition-all duration-200 hover:scale-105"
           >
             Home
           </Link>
           <Link
             to="/study"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="text-base font-medium text-muted-foreground hover:text-primary hover:bg-primary/10 px-3 py-2 rounded-lg transition-all duration-200 hover:scale-105"
           >
             Study
           </Link>
