@@ -10,7 +10,9 @@ class GeminiService:
     def __init__(self):
         if settings.GEMINI_API_KEY:
             genai.configure(api_key=settings.GEMINI_API_KEY)
-            self.model = genai.GenerativeModel('gemini-1.5-flash')
+            self.model = genai.GenerativeModel('gemini-flash-latest')
+            for m in genai.list_models():
+                print(m.name, m.supported_generation_methods)
         else:
             logger.warning("GEMINI_API_KEY not set. AI features will return mock data.")
             self.model = None
