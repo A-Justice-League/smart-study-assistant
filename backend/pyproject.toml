@@ -1,0 +1,17 @@
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+select = ["E", "F", "I"] # Enable Pyflakes, pycodestyle, and isort
+ignore = []
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --asyncio-mode=auto"
+testpaths = [
+    "tests",
+]
+python_files = "test_*.py"
