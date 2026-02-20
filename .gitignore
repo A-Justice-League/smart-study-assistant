@@ -4,4 +4,11 @@ venv/
 .env
 .pytest_cache/
 .vscode/
+# Local test artifacts
+backend/full_traceback.txt
+backend/test_output.txt
+backend/verify_structure.txt
+backend/test_output.txt
+*.txt
+*.log
 
