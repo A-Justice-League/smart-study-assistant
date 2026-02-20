@@ -1,10 +1,11 @@
 from fastapi import FastAPI
-from app.core.config import settings
+
 from app.api.v1.router import api_router
+from app.core.config import settings
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    openapi_url=f"/openapi.json"
+    openapi_url="/openapi.json"
 )
 
 # Include the main V1 router (currently empty)
