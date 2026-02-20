@@ -1,12 +1,13 @@
-import sys
 import os
+import sys
 
 # Add current directory to sys.path to ensure imports work
 sys.path.append(os.getcwd())
 
 try:
-    from app.main import app
     from fastapi.testclient import TestClient
+
+    from app.main import app
 except ImportError as e:
     print(f"ImportError: {e}")
     sys.exit(1)
