@@ -1,31 +1,74 @@
-# Smart Study Assistant - Backend
+# Smart Study Assistant Backend
 
-The stateless utility backend for transforming academic content into structured study aids.
+This is the FastAPI backend for the Smart Study Assistant application.
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
-1. **Setup Environment**:
+### Prerequisites
+
+- Python 3.9+
+- Pip
+- Supabase Account (Optional for mock mode)
+- Google Gemini API Key (Optional for mock AI)
+
+### Installation
+
+1. Clone the repository and navigate to `backend/`:
    ```bash
-   python3 -m venv venv
+   cd backend
+   ```
+
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   # Windows
+   .\venv\Scripts\activate
+   # Linux/Mac
    source venv/bin/activate
+   ```
+
+3. Install dependencies:
+   ```bash
    pip install -r requirements.txt
    ```
 
-2. **Run App**:
+4. Configure Environment:
+   Copy `.env.example` to `.env`:
    ```bash
-   uvicorn app.main:app --reload
+   cp .env.example .env
    ```
+   Update `.env` with your API keys.
 
-## 📚 Documentation
+### Running the Server
 
-For complete setup instructions, troubleshooting, and architectural details, please refer to:
-- **[Local Development Guide](docs/LOCAL_DEVELOPMENT_GUIDE.md)**: How to set up DB, environment variables, and run tests.
-- **[Architecture Guide](ARCHITECTURE_GUIDE.md)**: Deep dive into the feature-based modular design.
+Start the development server with hot reload:
 
-## 🛠️ Tech Stack
-- **Framework**: [FastAPI](https://fastapi.tiangolo.com/)
-- **Database**: [PostgreSQL](https://www.postgresql.org/) with [SQLAlchemy](https://www.sqlalchemy.org/)
-- **Migrations**: [Alembic](https://alembic.sqlalchemy.org/)
-- **Linting**: [Ruff](https://beta.ruff.rs/docs/)
-- **Formatting**: [Black](https://github.com/psf/black)
-- **Testing**: [Pytest](https://docs.pytest.org/)
+```bash
+uvicorn app.main:app --reload
+```
+
+The API will be available at `http://localhost:8000`.
+API Documentation (Swagger UI) is available at `http://localhost:8000/docs`.
+
+### Running Tests
+
+```bash
+pytest
+```
+
+## 📁 Project Structure
+
+```
+backend/
+├── app/
+│   ├── api/v1/         # API Routes
+│   ├── core/           # Config, Logging, Errors
+│   ├── db/             # Database Client & Repositories
+│   ├── schemas/        # Pydantic Models
+│   ├── services/       # Business Logic (AI, PDF, Storage)
+│   └── utils/          # Helper functions
+├── tests/              # Test Suite
+├── .env.example        # Environment Template
+├── main.py             # App Entry Point
+└── requirements.txt    # Python Dependencies
+```
