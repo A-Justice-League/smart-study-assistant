@@ -1,20 +1,45 @@
+"""
+Application entrypoint.
+
+- Initializes FastAPI app
+- Configures middleware
+- Registers routers
+- Sets up global exception handlers
+- Provides health and root endpoints
+"""
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
 from app.core.config import settings
 from app.core.errors import APIError
 from app.core.logging import setup_logging
 from app.api.v1.api import api_router
 
+
+# ------------------------------------------------------------
+# Logging Setup
+# ------------------------------------------------------------
+
 setup_logging()
+
+
+# ------------------------------------------------------------
+# FastAPI App Initialization
+# ------------------------------------------------------------
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json"
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
 )
 
-# CORS
+
+# ------------------------------------------------------------
+# Middleware
+# ------------------------------------------------------------
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
@@ -23,7 +48,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Global Error Handler
+
+# ------------------------------------------------------------
+# Global Exception Handlers
+# ------------------------------------------------------------
+
 @app.exception_handler(APIError)
 async def api_error_handler(request: Request, exc: APIError):
     return JSONResponse(
@@ -33,10 +62,11 @@ async def api_error_handler(request: Request, exc: APIError):
             "error": {
                 "code": exc.code,
                 "message": exc.message,
-                "details": exc.details
-            }
-        }
+                "details": exc.details,
+            },
+        },
     )
+
 
 @app.exception_handler(Exception)
 async def general_exception_handler(request: Request, exc: Exception):
@@ -47,13 +77,32 @@ async def general_exception_handler(request: Request, exc: Exception):
             "error": {
                 "code": "INTERNAL_SERVER_ERROR",
                 "message": "An unexpected error occurred.",
-                "details": {"error": str(exc)}
-            }
-        }
+                "details": {"error": str(exc)},
+            },
+        },
     )
+
+
+# ------------------------------------------------------------
+# Routers
+# ------------------------------------------------------------
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
+
+# ------------------------------------------------------------
+# Core Endpoints
+# ------------------------------------------------------------
+
 @app.get("/")
-def root():
-    return {"message": "Welcome to Smart Study Assistant Backend"}
+async def root():
+    return {
+        "success": True,
+        "message": f"Welcome to {settings.PROJECT_NAME}",
+        "version": settings.VERSION,
+    }
+
+
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
