@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
 from typing import List, Literal
 from uuid import UUID
+
+from pydantic import BaseModel, Field
+
 
 class QuizRequest(BaseModel):
     content: str = Field(..., min_length=50)

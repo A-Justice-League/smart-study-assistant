@@ -1,5 +1,6 @@
 from .schemas import SummarizationRequest, SummarizationResponse
 
+
 class SummarizationService:
     async def summarize_content(self, request: SummarizationRequest) -> SummarizationResponse:
         # TODO: Implement AI summarization logic (Gemini)

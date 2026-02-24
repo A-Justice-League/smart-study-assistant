@@ -1,5 +1,7 @@
 from uuid import uuid4
-from .schemas import QuizRequest, QuizResponse, Question
+
+from .schemas import Question, QuizRequest, QuizResponse
+
 
 class QuizService:
     async def generate_quiz(self, request: QuizRequest) -> QuizResponse:

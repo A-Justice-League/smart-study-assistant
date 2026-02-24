@@ -1,5 +1,6 @@
 from .schemas import DiagramRequest, DiagramResponse
 
+
 class DiagramService:
     async def generate_diagram(self, request: DiagramRequest) -> DiagramResponse:
         # TODO: Implement Diagram generation logic

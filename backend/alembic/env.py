@@ -6,11 +6,11 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
-
-# Import your Base and models here so Alembic can see them
-from app.core.database import Base
 from app.core.config import settings
+from app.core.database import Base
 
+# Import models for Alembic autogenerate
+from app.api.v1.features.extraction.models import ExtractionDocument
 
 config = context.config
 
