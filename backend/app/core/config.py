@@ -1,4 +1,3 @@
-<<<<<<< refactor/api-feature-skeleton-2026-02-18
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -22,7 +21,6 @@ class Settings(BaseSettings):
         # extra = "ignore" 
 
 settings = Settings()
-=======
 from typing import List, Union
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import AnyHttpUrl, field_validator
@@ -54,4 +52,3 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 
 settings = Settings()
->>>>>>> main
