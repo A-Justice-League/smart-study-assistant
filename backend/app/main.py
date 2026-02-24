@@ -1,19 +1,76 @@
-from fastapi import FastAPI
+"""
+Application entrypoint.
+"""
+
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
 from app.core.config import settings
-from app.api.v1.router import api_router
+from app.core.errors import APIError
+from app.core.logging import setup_logging
+from app.api.v1.api import api_router
 
-app = FastAPI(
-    title=settings.PROJECT_NAME,
-    openapi_url=f"/openapi.json"
-)
 
-# Include the main V1 router (currently empty)
-app.include_router(api_router, prefix="/api/v1")
+setup_logging()
 
-@app.get("/")
-async def root():
-    return {"message": "Welcome to Smart Study Assistant Backend!"}
 
-@app.get("/health")
-async def health_check():
-    return {"status": "ok"}
+def create_application() -> FastAPI:
+    app = FastAPI(
+        title=settings.PROJECT_NAME,
+        version=settings.VERSION,
+        openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    )
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.CORS_ORIGINS,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    @app.exception_handler(APIError)
+    async def api_error_handler(request: Request, exc: APIError):
+        return JSONResponse(
+            status_code=exc.status_code,
+            content={
+                "success": False,
+                "error": {
+                    "code": exc.code,
+                    "message": exc.message,
+                    "details": exc.details,
+                },
+            },
+        )
+
+    @app.exception_handler(Exception)
+    async def general_exception_handler(request: Request, exc: Exception):
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": {
+                    "code": "INTERNAL_SERVER_ERROR",
+                    "message": "An unexpected error occurred.",
+                },
+            },
+        )
+
+    app.include_router(api_router, prefix=settings.API_V1_STR)
+
+    @app.get("/")
+    async def root():
+        return {
+            "success": True,
+            "message": f"Welcome to {settings.PROJECT_NAME}",
+        }
+
+    @app.get("/health")
+    async def health_check():
+        return {"status": "ok"}
+
+    return app
+
+
+app = create_application()
