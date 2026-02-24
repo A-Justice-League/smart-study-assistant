@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+<<<<<<< refactor/api-feature-skeleton-2026-02-18
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
